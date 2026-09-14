@@ -1,0 +1,110 @@
+openapi: 3.0.0
+info:
+  title: Expense Tracker API
+  version: 1.0.0
+  description: Personal expense tracker backend API 
+servers:
+  - url: http://localhost:3000
+    description: local development server
+
+paths:
+  /api/transactions:
+    get:
+      summary: Get all the transaction list
+      responses:
+        '200':
+          description: Return successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+
+    post:
+      summary: create a new transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewTransaction'
+      responses:
+        '201':
+          description: create successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '400':
+          description: Please provide complete billing information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Please provide complete billing information
+
+  /api/transactions/{id}:
+    delete:
+      summary: delete the transaction by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: transaction's ID
+      responses:
+        '200':
+          description: delete successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Delete succeeded
+                  id:
+                    type: integer
+                    example: 1
+
+components:
+  schemas:
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: Buy a coffee
+        amount:
+          type: number
+          example: 35
+        type:
+          type: string
+          enum: [income, expense]
+          example: expense
+
+    NewTransaction:
+      type: object
+      required:
+        - title
+        - amount
+        - type
+      properties:
+        title:
+          type: string
+          example: Salary
+        amount:
+          type: number
+          example: 5000
+        type:
+          type: string
+          enum: [income, expense]
+          example: income

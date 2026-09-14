@@ -30,10 +30,10 @@ app.post('/api/transactions', (req, res) => {
         type
     }
     transactions.push(newTransaction);
-    return res.status(200).json(newTransaction);
+    return res.status(201).json(newTransaction);
 })
 
-app.delete('/api/transaction', (req, res) => {
+app.delete('/api/transactions', (req, res) => {
     const id = Number(req.params.id);
     let updateTransaction = [];
     for (let i = 0; i < transactions.length; i++) {
